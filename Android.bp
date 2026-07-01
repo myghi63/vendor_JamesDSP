@@ -11,6 +11,11 @@ android_app_import {
     },
     overrides: ["AudioFX", "MusicFX"],
     privileged: true,
+    // The prebuilt APK ships compressed dex and is dual-signed (v1 + v2/v3).
+    // Privileged apps normally require uncompressed dex, but we can't uncompress
+    // it without invalidating the v2/v3 signature. Skip the presigned-APK checks;
+    // PackageManager extracts the dex at dexopt time instead.
+    skip_preprocessed_apk_checks: true,
     product_specific: true,
 }
 
