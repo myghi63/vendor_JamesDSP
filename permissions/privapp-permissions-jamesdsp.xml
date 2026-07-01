@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<permissions>
+    <!-- JamesDSP (RootlessJamesDSP) Enhanced processing reads dumpsys of the
+         audio services to enumerate audio sessions, which needs DUMP
+         (signature|privileged|development). Allowlist it so the privileged
+         app is granted DUMP at build time. -->
+    <privapp-permissions package="james.dsp">
+        <permission name="android.permission.DUMP"/>
+    </privapp-permissions>
+</permissions>

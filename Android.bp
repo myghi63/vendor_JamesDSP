@@ -10,6 +10,7 @@ android_app_import {
         enabled: false,
     },
     overrides: ["AudioFX", "MusicFX"],
+    privileged: true,
     product_specific: true,
 }
 
