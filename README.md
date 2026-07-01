@@ -33,15 +33,13 @@ either be ignored, or worse, shadow the SKU config and break the QTI effects.
 
 Wire it by hand instead:
 
-**1. Do not inherit `config.mk`.** Add the pieces manually to `device.mk`:
+**1. Inherit `common.mk`, not `config.mk`.** `common.mk` carries the
+device-path-agnostic parts — the app, the effect library, and the Enhanced
+processing DUMP allowlist — but *not* the default effect-config copy that would
+clash with your SKU config. In `device.mk`:
 
-    # JamesDSP (AIDL audio effect)
-    PRODUCT_SOONG_NAMESPACES += \
-        vendor/JamesDSP
-
-    PRODUCT_PACKAGES += \
-        JamesDSP \
-        libjamesdspaidl
+    # JamesDSP (AIDL audio effect) - register the effect in the SKU config below
+    $(call inherit-product, vendor/JamesDSP/common.mk)
 
 **2. Find the effect config your HAL actually reads.** On QTI trees it is the
 copy landed at the SKU path, e.g. in `device.mk`:
@@ -72,15 +70,11 @@ Then repoint the SKU copy in `device.mk` to your patched file:
 
     $(LOCAL_PATH)/configs/audio/audio_effects_config.xml:$(TARGET_COPY_OUT_VENDOR)/etc/audio/sku_tuna/audio_effects_config.xml \
 
-**4. Add the Enhanced-processing allowlist.** Since you skipped `config.mk`,
-copy the privapp allowlist yourself so the privileged app is granted DUMP:
-
-    PRODUCT_COPY_FILES += \
-        vendor/JamesDSP/permissions/privapp-permissions-jamesdsp.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-jamesdsp.xml
-
-The app is built `privileged: true`, so this allowlist is **required** — a
-privileged app requesting DUMP without an allowlist entry fails to boot on user
-builds.
+That's it. The app, effect library, and the Enhanced-processing DUMP allowlist
+come from `common.mk` in step 1 — only the SKU effect registration is manual.
+(The app is built `privileged: true`, and the allowlist `common.mk` ships is
+what keeps it booting: a privileged app requesting DUMP without an allowlist
+entry fails to boot on user builds.)
 
 ### Verifying
 
