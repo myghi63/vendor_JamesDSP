@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Pre-grant the runtime (dangerous) permissions JamesDSP declares so the user
+    does not have to grant them by hand. fixed="false" lets the user still revoke
+    them in Settings. Landed at /product/etc/default-permissions/.
+
+    Only runtime perms can be pre-granted here:
+      RECORD_AUDIO      - live audio capture for the analyser / auto-EQ
+      POST_NOTIFICATIONS - the foreground-service / processing notification
+
+    Everything else JamesDSP declares is either a normal permission (auto-granted
+    at install: INTERNET, WAKE_LOCK, QUERY_ALL_PACKAGES, FOREGROUND_SERVICE*,
+    RECEIVE_BOOT_COMPLETED, UPDATE_PACKAGES_WITHOUT_USER_ACTION,
+    REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, ...), a signature|privileged perm
+    granted via privapp-permissions-jamesdsp.xml (DUMP), or an AppOp that has no
+    build-time XML grant (SYSTEM_ALERT_WINDOW "draw over other apps",
+    REQUEST_INSTALL_PACKAGES) and stays a one-time manual toggle.
+-->
+<exceptions>
+    <exception package="james.dsp">
+        <permission name="android.permission.RECORD_AUDIO" fixed="false"/>
+        <permission name="android.permission.POST_NOTIFICATIONS" fixed="false"/>
+    </exception>
+</exceptions>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    SystemConfig grants for JamesDSP. Lands at /product/etc/sysconfig/.
+
+    allow-in-power-save: exempts JamesDSP from Doze / app-standby so its audio
+    processing foreground service is never deferred or killed in the background
+    (Settings shows this as "Unrestricted" battery usage). This is what the app's
+    own REQUEST_IGNORE_BATTERY_OPTIMIZATIONS prompt would otherwise ask for.
+-->
+<config>
+    <allow-in-power-save package="james.dsp" />
+</config>

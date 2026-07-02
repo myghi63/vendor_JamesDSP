@@ -13,6 +13,13 @@ PRODUCT_PACKAGES += \
     JamesDSP \
     libjamesdspaidl
 
-# Privileged-app permission allowlist: grant DUMP for Enhanced processing
+# Privileged-app permission allowlist: grant DUMP for Enhanced processing.
+# default-permissions: pre-grant the runtime perms (RECORD_AUDIO,
+# POST_NOTIFICATIONS) so nothing has to be granted by hand.
 PRODUCT_COPY_FILES += \
-	vendor/JamesDSP/permissions/privapp-permissions-jamesdsp.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-jamesdsp.xml
+	vendor/JamesDSP/permissions/privapp-permissions-jamesdsp.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/permissions/privapp-permissions-jamesdsp.xml \
+	vendor/JamesDSP/permissions/default-permissions-jamesdsp.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/default-permissions/default-permissions-jamesdsp.xml
+
+# SystemConfig: exempt JamesDSP from Doze / app-standby (Unrestricted battery)
+PRODUCT_COPY_FILES += \
+	vendor/JamesDSP/sysconfig/jamesdsp.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/sysconfig/jamesdsp.xml
